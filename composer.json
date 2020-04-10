@@ -1,4 +1,6 @@
 {
+    "name": "jerrodpy/symfony-demo",
+    "description": "Example symfony-demo",
     "type": "project",
     "license": "proprietary",
     "require": {
