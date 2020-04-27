@@ -1,4 +1,4 @@
-name: PHP Composer
+name: GitHubActions-CI-CD-Pipeline
 
 on:
   push:
@@ -32,11 +32,6 @@ jobs:
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
 
-#      - name: Show var
-#        run: |
-#          echo "var: ${{steps.vars.outputs.tag}}"
-#          echo "name: ${{ name }}"
-          
       - name: Build the tagged Docker image
         run: docker build . --file docker/php/Dockerfile --tag jerrodpy/symfony-demo:ver-${{ github.sha }}
 
