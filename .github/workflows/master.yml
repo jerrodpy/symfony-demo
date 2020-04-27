@@ -32,14 +32,19 @@ jobs:
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
 
+#      - name: Show var
+#        run: |
+#          echo "var: ${{steps.vars.outputs.tag}}"
+#          echo "name: ${{ name }}"
+          
       - name: Build the tagged Docker image
-        run: docker build . --file Dockerfile --tag jerrodpy/symfony-demo:${{steps.vars.outputs.tag}}
+        run: docker build . --file docker/php/Dockerfile --tag jerrodpy/symfony-demo:ver-${{ github.sha }}
 
       - name: Push the tagged Docker image
-        run: docker push jerrodpy/symfony-demo:${{steps.vars.outputs.tag}}
+        run: docker push jerrodpy/symfony-demo:ver-${{ github.sha }}
 
-      - name: Build the latest Docker image
-        run: docker build . --file Dockerfile --tag jerrodpy/symfony-demo:latest
+#      - name: Build the latest Docker image
+#        run: docker build . --file Dockerfile --tag jerrodpy/symfony-demo:latest
 
-      - name: Push the tagged Docker image
-        run: docker push jerrodpy/symfony-demo:latest
+#      - name: Push the tagged Docker image
+#        run: docker push jerrodpy/symfony-demo:latest
