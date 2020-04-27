@@ -33,11 +33,13 @@ jobs:
         run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
 
       - name: Build the tagged Docker image
-        run: docker build . --file docker/php/Dockerfile --tag jerrodpy/symfony-demo:ver-${GITHUB_REF:11}
+        run: docker build . --file docker/php/Dockerfile --tag jerrodpy/symfony-demo:ver-${{ github.sha }}
 
       - name: Push the tagged Docker image
-        run: docker push jerrodpy/symfony-demo:ver-${GITHUB_REF:11}
+        run: docker push jerrodpy/symfony-demo:ver-${{ github.sha }}
 
+#        ${GITHUB_REF:11} - master
+#        ${{ github.sha }}
 #      - name: Build the latest Docker image
 #        run: docker build . --file Dockerfile --tag jerrodpy/symfony-demo:latest
 
