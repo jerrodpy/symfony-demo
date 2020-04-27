@@ -1,0 +1,45 @@
+name: PHP Composer
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
+      # Docs: https://getcomposer.org/doc/articles/scripts.md
+
+      # - name: Run test suite
+      #   run: composer run-script test
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKER_PASS }} | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
+
+      - name: Get the version
+        id: vars
+        run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
+
+      - name: Build the tagged Docker image
+        run: docker build . --file Dockerfile --tag jerrodpy/symfony-demo:${{steps.vars.outputs.tag}}
+
+      - name: Push the tagged Docker image
+        run: docker push jerrodpy/symfony-demo:${{steps.vars.outputs.tag}}
+
+      - name: Build the latest Docker image
+        run: docker build . --file Dockerfile --tag jerrodpy/symfony-demo:latest
+
+      - name: Push the tagged Docker image
+        run: docker push jerrodpy/symfony-demo:latest
