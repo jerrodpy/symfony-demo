@@ -25,3 +25,12 @@ jobs:
 
     # - name: Run test suite
     #   run: composer run-script test
+    - name: Docker Build & Push to Docker Hub  
+      uses: jerrodpy/symfony-demo@master
+      with:
+        args: --docker
+      env:
+        USERNAME: ${{  secret.DOCKER_USER}}
+        PASSWORD: ${{ secret.DOCKER_PASS }}
+        DOCKERFILE: "Dockerfile"
+#        IMAGE_NAME: ""
