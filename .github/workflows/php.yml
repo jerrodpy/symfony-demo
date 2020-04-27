@@ -30,7 +30,7 @@ jobs:
       with:
         args: --docker
       env:
-        USERNAME: ${{  secret.DOCKER_USER}}
-        PASSWORD: ${{ secret.DOCKER_PASS }}
+        USERNAME: ${{ secrets.DOCKER_USER}}
+        PASSWORD: ${{ secrets.DOCKER_PASS }}
         DOCKERFILE: "Dockerfile"
 #        IMAGE_NAME: ""
